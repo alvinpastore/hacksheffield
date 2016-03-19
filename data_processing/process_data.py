@@ -12,6 +12,9 @@ distance    = 'distance'
 speed       = 'speed'
 bearing     = 'bearing'
 
+UNKNOWN = 'unknown'
+TILTING = 'tilting'
+
 FIVE_HOURS = 18000
 SIX_HOURS  = 21600
 
@@ -72,7 +75,7 @@ def translate_undecided(d):
     translate_amount = 0
 
     for i in range(1,len(d)-1):
-        undecided = d[i][activity] == 'unknown' or d[i][activity] == 'tilting'
+        undecided = d[i][activity] == UNKNOWN or d[i][activity] == TILTING
         # if the previous and next activities are the same
         if d[i-1][activity] == d[i+1][activity] and d[i][activity] != d[i+1][activity] and undecided:
             translate_amount += 1
@@ -90,6 +93,34 @@ def translate_undecided(d):
     print "translated " + str(translate_amount) + " rows"
     return d
 
+
+def collapse_undecided(d):
+    collapsed_data = []
+    collapse_amount = 0
+
+    i = 0
+    while i < len(d):
+        if d[i][activity] == UNKNOWN or d[i][activity] == TILTING:
+            j = i+1
+            while j < len(d):
+                if d[j][activity] == d[i][activity]:
+                    d[i][duration] = d[i][duration] + d[j][duration]
+                    d[i][steps] = d[i][steps] + d[j][steps]
+                    d[i][distance] = d[i][distance] + d[j][distance]
+                    d[i][speed] = d[i][speed] + d[j][speed]
+                    j += 1
+                    collapse_amount += 1
+                else:
+                    collapsed_data.append(d[i])
+                    i = j
+                    break
+
+        else:
+            collapsed_data.append(d[i])
+        i += 1
+    print "collapsed " + str(collapse_amount) + " rows"
+    return collapsed_data
+
 # step 1 read the data
 hackdata = read_hackdata()
 original_data_amount = len(hackdata)
@@ -98,16 +129,21 @@ original_data_amount = len(hackdata)
 hackdata = clean_data(hackdata)
 clean_data_amount = len(hackdata)
 
-# step 3 translate unknown and itlting to activity
+#TODO do this in a loop until no change happens
+
+# step 3 translate undecided (unknown and tilting) to activity
 hackdata = translate_undecided(hackdata)
 
-distance_stats = get_stats(hackdata,distance)
+# step 4 collapse consecutive undecided
+hackdata = collapse_undecided(hackdata)
 
-print 'distance stats \n' \
-      'mean: {0},  median: {1} std: {2} max: {3}'.\
-    format(distance_stats['mean'],distance_stats['median'],distance_stats['std'],max(distance_stats['raw_data']))
+
+#distance_stats = get_stats(hackdata,distance)
+#print 'distance stats \n' \
+#      'mean: {0},  median: {1} std: {2} max: {3}'.\
+#    format(distance_stats['mean'],distance_stats['median'],distance_stats['std'],max(distance_stats['raw_data']))
 
 #plt.hist(distance_stats['raw_data'], bins=100)
 #plt.show()
 
-#write_hackdata(hackdata)
+write_hackdata(hackdata)
