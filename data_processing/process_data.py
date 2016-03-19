@@ -1,5 +1,5 @@
 from read_data import read_hackdata
-from write_data import write_hackdata
+import write_data
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -91,7 +91,7 @@ def translate_undecided(d):
                 d[i][activity] = d[i-1][activity]
 
     print "translated " + str(translate_amount) + " rows"
-    return d
+    return d, translate_amount
 
 
 def collapse_undecided(d):
@@ -119,7 +119,7 @@ def collapse_undecided(d):
             collapsed_data.append(d[i])
         i += 1
     print "collapsed " + str(collapse_amount) + " rows"
-    return collapsed_data
+    return collapsed_data, collapse_amount
 
 # step 1 read the data
 hackdata = read_hackdata()
@@ -129,13 +129,15 @@ original_data_amount = len(hackdata)
 hackdata = clean_data(hackdata)
 clean_data_amount = len(hackdata)
 
-#TODO do this in a loop until no change happens
+collapsed = 1
+translated = 1
+while collapsed > 0 or translated > 0:
 
-# step 3 translate undecided (unknown and tilting) to activity
-hackdata = translate_undecided(hackdata)
+    # step 3 translate undecided (unknown and tilting) to activity
+    hackdata,translated = translate_undecided(hackdata)
 
-# step 4 collapse consecutive undecided
-hackdata = collapse_undecided(hackdata)
+    # step 4 collapse consecutive undecided
+    hackdata,collapsed = collapse_undecided(hackdata)
 
 
 #distance_stats = get_stats(hackdata,distance)
@@ -146,4 +148,5 @@ hackdata = collapse_undecided(hackdata)
 #plt.hist(distance_stats['raw_data'], bins=100)
 #plt.show()
 
-write_hackdata(hackdata)
+#write_data.write_hackdata(hackdata)
+write_data.write_hackdata_matrix(hackdata)
