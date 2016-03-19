@@ -1,0 +1,42 @@
+$walking-colour: #fe5621; /* orange */
+$running-colour: #4bae4f; /* green */
+$cycling-color: #00bbd3; /* cyan */
+$still-colour: #333333; /* grey */
+$unknown-colour: #6639b6; /* purple */
+
+html, body{
+  height: 100%;
+}
+
+textarea, input, span {
+  outline: none;
+}
+
+h1{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+body{
+  font-family: 'Lato', sans-serif;
+}
+
+.activity{
+  height: 70px;
+  min-height: auto;
+
+  .bar {
+    height: 100%;
+    background-color: $walking-colour;
+  }
+
+  .info{
+    height: 100%;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: 20px;
+  }
+
+}
