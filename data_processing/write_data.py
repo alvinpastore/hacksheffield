@@ -44,12 +44,15 @@ def map_activity(act):
 
 def write_hackdata_matrix(d):
 
-    data_file = '../data/hackdata_matrix.csv'
-    outfile = open(data_file, 'wb') # opens the input csv file
+    outfile_matrix = open('../data/hackdata_matrix.csv', 'wb')
+    outfile_labels = open('../data/hackdata_labels.csv', 'wb')
 
     try:
-        writer = csv.writer(outfile)
+        writer_matrix = csv.writer(outfile_matrix)
+        writer_labels = csv.writer(outfile_labels)
         for row in d:
-            writer.writerow([row[time_].time().hour, row[duration], row[steps], row[distance], row[speed], row[bearing]])
+            writer_matrix.writerow([row[time_].time().hour, row[duration], row[steps], row[distance], row[speed], row[bearing]])
+            writer_labels.writerow([map_activity(row[activity])])
     finally:
-        outfile.close()
+        outfile_matrix.close()
+        outfile_labels.close()
