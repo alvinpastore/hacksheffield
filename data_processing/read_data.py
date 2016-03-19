@@ -10,7 +10,7 @@ def read_hackdata():
     data_file = '../data/hackdata.csv'
 
     activity    = 'activity'
-    time        = 'time'
+    time_       = 'time'
     duration    = 'duration'
     steps       = 'steps'
     distance    = 'distance'
@@ -29,8 +29,8 @@ def read_hackdata():
             event_time = datetime.datetime.fromtimestamp(float(row[2])/1000.0)
 
             # create a dictionary entry with the details of the row (except index...)
-            event = {activity: row[1].strip().lower(), time: event_time, duration: row[3],
-                    steps: row[4], distance: row[5], speed: row[6], bearing: row[7]}
+            event = {activity: row[1].strip().lower(), time_: event_time, duration: int(row[3]),
+                    steps: int(row[4]), distance: int(row[5]), speed: int(row[6]), bearing: int(row[7])}
 
             # append event row to list (...index is now the index in the list)
             hackdata.append(event)
