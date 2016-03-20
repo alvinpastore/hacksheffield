@@ -1,3 +1,4 @@
+from __future__ import division
 from read_data import read_hackdata
 import write_data
 import numpy as np
@@ -66,6 +67,7 @@ def get_stats(d,feature):
     s['mean']     = np.mean(feature_data)
     s['std']      = np.std(feature_data)
     s['median']   = np.median(feature_data)
+    s['max']      = np.max(feature_data)
     s['raw_data'] = feature_data
 
     return s
@@ -121,13 +123,36 @@ def collapse_undecided(d):
     print "collapsed " + str(collapse_amount) + " rows"
     return collapsed_data, collapse_amount
 
+
+def normalise_data(d):
+    normalised_data = []
+    duration_stats = get_stats(d,duration)
+    steps_stats = get_stats(d,steps)
+    distance_stats = get_stats(d,distance)
+    bearing_stats = get_stats(d,bearing)
+    speed_stats = get_stats(d,speed)
+
+    for row in d:
+        time_n = row[time_].time().hour / 23
+        duration_n = row[duration] / duration_stats['max']
+        steps_n = row[steps] / steps_stats['max']
+        distance_n = row[distance] / distance_stats['max']
+        speed_n = row[speed] / speed_stats['max']
+        bearing_n = row[bearing] / bearing_stats['max']
+        normalised_data.append({activity: row[activity],
+                                time_: time_n,
+                                duration: duration_n,
+                                steps: steps_n,
+                                distance: distance_n,
+                                speed: speed_n,
+                                bearing: bearing_n})
+    return normalised_data
+
 # step 1 read the data
 hackdata = read_hackdata()
-original_data_amount = len(hackdata)
 
 # step 2 clean the data from unrealistic values
 hackdata = clean_data(hackdata)
-clean_data_amount = len(hackdata)
 
 collapsed = 1
 translated = 1
@@ -139,7 +164,10 @@ while collapsed > 0 or translated > 0:
     # step 4 collapse consecutive undecided
     hackdata,collapsed = collapse_undecided(hackdata)
 
+# step 5 clean the data from unrealistic values again (as some collapsing can add values)
+hackdata = clean_data(hackdata)
 
+hackdata = normalise_data(hackdata)
 #distance_stats = get_stats(hackdata,distance)
 #print 'distance stats \n' \
 #      'mean: {0},  median: {1} std: {2} max: {3}'.\
