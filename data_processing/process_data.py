@@ -133,7 +133,7 @@ def normalise_data(d):
     speed_stats = get_stats(d,speed)
 
     for row in d:
-        time_n = row[time_].time().hour / 23
+        time_n = row[time_].time().hour / (23 * 10) # scaling factor
         duration_n = row[duration] / duration_stats['max']
         steps_n = row[steps] / steps_stats['max']
         distance_n = row[distance] / distance_stats['max']
