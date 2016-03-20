@@ -51,7 +51,7 @@ def write_hackdata_matrix(d):
         writer_matrix = csv.writer(outfile_matrix)
         writer_labels = csv.writer(outfile_labels)
         for row in d:
-            writer_matrix.writerow([row[time_].time().hour, row[duration], row[steps], row[distance], row[speed], row[bearing]])
+            writer_matrix.writerow([row[time_], row[duration], row[steps], row[distance], row[speed], row[bearing]])
             writer_labels.writerow([map_activity(row[activity])])
     finally:
         outfile_matrix.close()
