@@ -20,23 +20,27 @@ h1{
 
 body{
   font-family: 'Lato', sans-serif;
+  padding: 0;
 }
 
 .activity{
-  height: 70px;
-  min-height: auto;
-
-  .bar {
-    height: 100%;
-    background-color: $walking-colour;
-  }
-
+  height: 50px;
+  padding: 10px;
   .info{
-    height: 100%;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    text-align: center;
+    text-align: left;
     font-size: 20px;
+    color: #fff
   }
 
+}
+
+.legend{
+  padding: 20px;
+}
+.legend-container{
+  margin-bottom: 20px;
+}
+
+.button-container{
+  padding: 20px;
 }

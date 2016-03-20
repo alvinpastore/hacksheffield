@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
 
-class Activity extends React.Component{
+class Bar extends React.Component{
   constructor(props){
     super(props);
     this.colour = "#222";
@@ -16,7 +16,7 @@ class Activity extends React.Component{
   }
   render(){
 
-    switch(this.props.type){
+    switch(this.props.dataPoint[1].trim().toUpperCase()){
       case "WALKING":
         this.colour = this.walkingColour;
         break;
@@ -42,22 +42,27 @@ class Activity extends React.Component{
         this.colour = this.unknowColour;
         break;
     }
-    var activityStyles = {backgroundColor: this.colour}
-    var date = moment.unix(this.props.time / 1000).format("hh:mm");
+
+    var activityIndex = 1;
+    var timeIndex = 2;
+    var durationIndex = 3;
+    var stepsIndex = 4;
+    var distanceIndex = 5;
+    var speedIndex = 6;
+    var bearingIndex = 7;
+
+    var timeDifference = this.props.timeDifference;
+
+    var dataPoint = this.props.dataPoint;
+    var barWidth = (dataPoint[durationIndex] / timeDifference.asSeconds()) * 100;
+    var styles = {backgroundColor: this.colour, width: barWidth + "%", float: "left"};
     return (
-      <div className="activity" style={activityStyles}>
-        <div className="col-xs-1 info date">{date}</div>
-        <div className="col-xs-2 info type">{this.props.type}</div>
-        <div className="col-sm-2 info duration">{this.props.duration} mins</div>
-        <div className="col-sm-2 info distance">{this.props.distance} meters</div>
-        <div className="col-sm-2 info steps">{this.props.steps} steps</div>
-        <div className="col-sm-2 info path">Path</div>
+      <div className="activity" style={styles}>
       </div>
       );
   }
 }
 
-Activity.defaultProps = {time: 0, duration: 0, distance: 0, steps: 0, type: "UNKNOWN"};
+Bar.defaultProps = {dataPoint: [0,0,0,0,0,0,0], timeDifference: 0};
 
-
-export default Activity;
+export default Bar;

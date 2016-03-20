@@ -15,17 +15,22 @@ h1 {
   text-align: center; }
 
 body {
-  font-family: 'Lato', sans-serif; }
+  font-family: 'Lato', sans-serif;
+  padding: 0; }
 
 .activity {
-  height: 70px;
-  min-height: auto; }
-  .activity .bar {
-    height: 100%;
-    background-color: #fe5621; }
+  height: 50px;
+  padding: 10px; }
   .activity .info {
-    height: 100%;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    text-align: center;
-    font-size: 20px; }
+    text-align: left;
+    font-size: 20px;
+    color: #fff; }
+
+.legend {
+  padding: 20px; }
+
+.legend-container {
+  margin-bottom: 20px; }
+
+.button-container {
+  padding: 20px; }
