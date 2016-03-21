@@ -30,3 +30,5 @@ Unsupervised learning is hard but super-cool.
 
 ## What's next for NoisyWorld
 Introducing techniques to reduce the effect of skew in the data. 
+
+[Data for this project is covered by non-disclosure agreement and cannot be distributed.]
